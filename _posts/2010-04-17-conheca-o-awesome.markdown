@@ -9,7 +9,7 @@ Antes do Awesome eu utilizei o ion3 por uma semana, o ion3 é muito bom por sina
 
 O Awesome é altamente customizável e da mesma forma que o ion3, o Awesome wm pode ser customizado utilizando scripts lua. Você pode criar widgets para incrementar sua statusbar ou scripts que automatizem algo.
 
-[caption id="" align="aligncenter" width="300" caption="Screenshot do Awesome wm 3.0"]<a href="http://awesome.naquadah.org/images/screen.png"><img title="Screenshot" src="http://awesome.naquadah.org/index/320x240-screen.png" alt="Screenshot do Awesome wm" width="300" height="240" /></a>[/caption]
+<a href="http://awesome.naquadah.org/images/screen.png"><img title="Screenshot" src="http://awesome.naquadah.org/index/320x240-screen.png" alt="Screenshot do Awesome wm" width="300" height="240" /></a>
 
 Os atalhos do Awesome são geralmente ligados à tecla Mod4 que geralmente representa a tecla Windows ou Apple do seu teclado. Exemplos:
 
