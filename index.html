@@ -2,8 +2,15 @@
 layout: default
 title: home
 ---
+<h1>Quem sou eu?</h1>
+<p>Meu nome é Higor Eurípedes, tenho 20 anos. Sou estudante da área de tecnologia da informação.</p>
+<h1>O que tem de bom por aqui?</h1>
+<p>Não muito. Eu só escrevo ocasionalmente, até porque eu sou muito duro nas minhas críticas sobre o que eu faço:
+reescrevo muito mais do que escrevo. Ah! E eu não tenho nenhuma intenção de cobrir um determinado assunto, vou
+postando o que dar na telha mesmo.</p>
+<p>De qualquer forma, isso aqui é o que eu já produzi:</p>
 <ul>
-{% for post in site.posts %}
+	{% for post in site.posts %}
 	<li><span>{{ post.date | date_to_string }}</span> - <a href="{{ post.url }}">{{ post.title }}</a></li>
-{% endfor %}
+	{% endfor %}
 </ul>
