@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Integrando Doxygen ao GNU Build System</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link
+		href="//fonts.googleapis.com/css?family=Droid+Serif:regular,bold,italic|Droid+Sans+Mono:regular,bold,italic" rel="stylesheet" type="text/css">
+		<link media="all" href="/style.css" type="text/css" rel="stylesheet" />
+		<link media="all" href="/hl.css" type="text/css" rel="stylesheet" />
+		<!--<link rel="shortcut icon" href="../rms.png" />-->
+	</head>
+
+	<body>
+		<div><a name="top"><b>heuripedes</b></a> - <a href="/">Home</a> / <a href="/sobre.html">Sobre</a></div>
+
+		<h1>Integrando Doxygen ao GNU Build System</h1>
+		<span>25 Apr 2010 - Higor Eurípedes</span>
+		<p>Depois de procurar muito e só achar coisas que não funcionavam, eu resolvi meter a mão na massa! Foi até divertido!</p>
+
+<p>Como todos sabem, ou deveriam saber, o GNU Build System - autohell para os mais íntimos - é o sistema de compilação mais famoso no mundo UNIX, ele tem suporte padrão a algumas linguagens (como C, C++ e Fortran), compilação de documentação na forma de man pages e LaTeX, e até uma suite de testes - essa eu não sei nem pra onde vai.</p>
+
+<p>Até aí tudo bem com o autohell, o problema é que eu não queria gerar man pages e muito menos documentos TeX: eu queria HTML pra ficar bonitinho que nem aquelas documentações de gente que sabe programar. Foi aí que encontrei o Doxygen, ele gera HTML e também tem suporte a uma pancada de formatos. O que eu queria mesmo era poder gerar a documentação usando o próprio autohell, e aí eu saí procurando e acabei achando algumas soluções como uma que está no arquivo de macros do autoconf. Só que a unica coisa que elas estavam fazendo era procurar o doxygen e outras ferramentas que ele precisa no sistema. O aminclude de algumas soluções que encontrei, estava muito mal escrito e o make relatava problemas o tempo todo.</p>
+
+<p>Bom, vamos deixar de enrolação e por logo a mão na massa. Primeiro, no configure.ac, você tem que adicionar o código a seguir:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="c"># Checa se o executavel doxygen existe no $PATH, se existir $DOXYGEN</span>
+<span class="c"># recebe doxygen</span>
+AC_CHECK_PROG<span class="o">([</span>DOXYGEN<span class="o">]</span>, <span class="o">[</span>doxygen<span class="o">]</span>, <span class="o">[</span>doxygen<span class="o">]</span>, <span class="o">[])</span>
+
+<span class="c"># Agora a gente faz a checagem pra ver se o doxygen foi detectado</span>
+<span class="c"># mesmo ou não se ele tiver sido detectado, temos que adicionar alguns</span>
+<span class="c"># alvos para o make</span>
+AC_MSG_CHECKING<span class="o">([</span>wheter to add documentation targets<span class="o">])</span>
+<span class="k">if </span><span class="nb">test</span> ! -z <span class="s2">&quot;$DOXYGEN&quot;</span>; <span class="k">then</span>
+<span class="k">    </span>AC_MSG_RESULT<span class="o">([</span>yes<span class="o">])</span>
+<span class="k">else</span>
+<span class="k">    </span>AC_MSG_RESULT<span class="o">([</span>no<span class="o">])</span>
+<span class="k">fi</span>
+
+<span class="c"># Se o doxygen foi detectado DOXY_DOC vai ser true.</span>
+AM_CONDITIONAL<span class="o">([</span>DOXY_DOC<span class="o">]</span>,<span class="o">[</span><span class="nb">test</span> ! -z <span class="s2">&quot;$DOXYGEN&quot;</span><span class="o">])</span>
+
+<span class="c"># A variavel DOXYGEN é só para o make encontrar o executavel do dito</span>
+<span class="c"># cujo.</span>
+AC_SUBST<span class="o">([</span>DOXYGEN<span class="o">]</span>, <span class="o">[</span><span class="nv">$DOXYGEN</span><span class="o">])</span>
+
+AC_CONFIG_FILES<span class="o">([</span>Makefile doc/Doxyfile doc/Makefile outro_diretorio/Makefile<span class="o">])</span>
+</code></pre>
+</div>
+
+
+<p>No Makefile.am da raiz do seu projeto você só precisa colocar o seguinte:</p>
+
+<div class="highlight"><pre><code class="makefile"><span class="c"># No projeto em que estou trabalhando o diretório da documentação é o</span>
+<span class="c"># diretorio doc, por isso DOC_DIR = doc quando o doxygen é</span>
+<span class="c"># detectado</span>
+<span class="nv">DOC_DIR</span> <span class="o">=</span>
+<span class="k">if </span>DOXY_DOC
+<span class="nv">DOC_DIR</span> <span class="o">=</span> doc
+<span class="cp">endif</span>
+<span class="nv">SUBDIRS</span> <span class="o">=</span> <span class="k">$(</span>DOC_DIR<span class="k">)</span> outro_diretorio
+
+<span class="c"># Aqui a gente adiciona o alvo para o make</span>
+doc:
+<span class="nb">cd</span> <span class="k">$(</span>top_srcdir<span class="k">)</span>/doc <span class="o">&amp;&amp;</span> <span class="k">$(</span>MAKE<span class="k">)</span> <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ..
+
+<span class="c"># E aqui a gente diz ao make que o alvo doc não pode ser tratado como</span>
+<span class="c"># arquivo.</span>
+.PHONY: doc
+</code></pre>
+</div>
+
+
+<p>O diretório da documentação também precisa de um Makefile.am, é esse o arquivo responsável por executar a compilação da documentação.</p>
+
+<div class="highlight"><pre><code class="makefile"><span class="c"># Isso aqui faz o make compilar quando ele for executar o make all.</span>
+<span class="nf">all</span><span class="o">:</span> <span class="m">html-local</span>
+
+<span class="c"># Instruções para compilação da documentação</span>
+<span class="nf">html-local</span><span class="o">:</span>
+    <span class="k">if </span>DOXY_DOC
+    rm -rf html/
+    <span class="k">$(</span>DOXYGEN<span class="k">)</span> 
+<span class="cp">   else</span>
+    @echo Doxygen not detected, skipping documentation build.
+<span class="cp">   endif</span>
+
+<span class="c"># Arquivos a serem copiados</span>
+<span class="nv">html_DATA</span> <span class="o">=</span> html/*
+
+<span class="c"># Truque para o make não reclamar quando não achar os alvos com nomes </span>
+<span class="c"># dos arquivos gerados pelo Doxygen</span>
+<span class="k">$(</span>html_DATA<span class="k">)</span>:
+
+<span class="c"># Instruções para instalação da documentação</span>
+install-html-local:
+    @<span class="k">$(</span>NORMAL_INSTALL<span class="k">)</span>
+    <span class="nb">test</span> -z <span class="s2">&quot;$(htmldir)&quot;</span> <span class="o">||</span> <span class="k">$(</span>MKDIR_P<span class="k">)</span> <span class="s2">&quot;$(DESTDIR)$(htmldir)&quot;</span>
+    @list<span class="o">=</span><span class="s1">&#39;$(html_DATA)&#39;</span>; <span class="se">\</span>
+    <span class="k">for </span>p in <span class="nv">$$</span>list; <span class="k">do</span> <span class="se">\</span>
+        <span class="k">if </span><span class="nb">test</span> -f <span class="s2">&quot;$$p&quot;</span>; <span class="k">then </span><span class="nv">d</span><span class="o">=</span>; <span class="k">else </span><span class="nv">d</span><span class="o">=</span><span class="s2">&quot;$(srcdir)/&quot;</span>; <span class="k">fi</span>; <span class="se">\</span>
+        <span class="nv">f</span><span class="o">=</span><span class="k">$(</span>am__strip_dir<span class="k">)</span> <span class="se">\</span>
+        <span class="nb">echo</span> <span class="s2">&quot; $(INSTALL_DATA) &#39;$$d$$p&#39; &#39;$(DESTDIR)$(htmldir)/$$f&#39;&quot;</span>; <span class="se">\</span>
+        <span class="k">$(</span>INSTALL_DATA<span class="k">)</span> <span class="s2">&quot;$$d$$p&quot;</span> <span class="s2">&quot;$(DESTDIR)$(htmldir)/$$f&quot;</span>; <span class="se">\</span>
+    <span class="k">done</span>
+
+<span class="c"># Instruções para limpeza de arquivos.</span>
+clean-local:
+    -rm -rf html/
+</code></pre>
+</div>
+
+
+
+
+<div class="highlight"><pre><code class="makefile"><span class="c"># Variáveis com os nomes de arquivos a ser excluidos</span>
+<span class="nv">CLEANFILES</span> <span class="o">=</span> Doxyfile Makefile.in
+<span class="nv">MAINTAINERCLEANFILES</span> <span class="o">=</span> <span class="k">$(</span>CLEANFILES<span class="k">)</span>
+</code></pre>
+</div>
+
+
+<p>Para finalizar, você precisa ter um arquivo Doxyfile.in no diretório da documentação. Ahn? Por que você precisa? Pelo simples fato de que é melhor usar paths absolutas para determinar o caminho do diretório onde está o source e do de saída da documentação. Assim evitamos problemas caso desejemos dar um make all dentro do diretório da documentação. No Doxyfile você precisa mudar o valor de algumas variáveis como no exemplo abaixo:</p>
+
+<pre><code>PROJECT_NAME           = "@PACKAGE_NAME@"
+PROJECT_NUMBER         = "@PACKAGE_VERSION@"
+OUTPUT_DIRECTORY       = @abs_top_srcdir@/doc
+STRIP_FROM_PATH        = @abs_top_srcdir@
+</code></pre>
+
+<p>Uma vantagem de se fazer isso é não precisar ficar atualizando o nome do projeto ou a versão, toda vez que você resolver mudar.</p>
+
+<p>Até a próxima.</p>
+
+		<div align="right"><a href="#top">^ Topo</a></div>
+	</body>
+</html>
+
+

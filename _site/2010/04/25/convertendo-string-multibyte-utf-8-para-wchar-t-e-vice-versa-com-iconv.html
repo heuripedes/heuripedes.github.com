@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Convertendo string multibyte UTF-8 para wchar_t e vice-versa com iconv</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link
+		href="//fonts.googleapis.com/css?family=Droid+Serif:regular,bold,italic|Droid+Sans+Mono:regular,bold,italic" rel="stylesheet" type="text/css">
+		<link media="all" href="/style.css" type="text/css" rel="stylesheet" />
+		<link media="all" href="/hl.css" type="text/css" rel="stylesheet" />
+		<!--<link rel="shortcut icon" href="../rms.png" />-->
+	</head>
+
+	<body>
+		<div><a name="top"><b>heuripedes</b></a> - <a href="/">Home</a> / <a href="/sobre.html">Sobre</a></div>
+
+		<h1>Convertendo string multibyte UTF-8 para wchar_t e vice-versa com iconv</h1>
+		<span>25 Apr 2010 - Higor Eurípedes</span>
+		<p>Nos ultimos dias eu estive trabalhando em uma forma de suportar  caracteres utf-8 no bitsheet. Ontem eu resolvi usar a iconv para fazer  este trabalho de conversão de wchar_t para UTF-8 e vice-versa. Resolvi  postar aqui a solução que usei.</p>
+
+<pre><code>&lt;Teoria chata&gt;
+</code></pre>
+
+<p>O tipo wchar_t foi introduzido para que houvesse suporte a wide  characters, mas a codificação de uma array de wchar_t (ou wide string) é  dependente da locale do sistema (LC_TYPE/LC_ALL/LC_LANG) e do  compilador. O padrão C não especifica um tamanho exato para o tipo  wchar_t, largando esta tarefa aos compiladores, então o valor deste tipo  geralmente varia entre 8 e 32 bits. No caso da implementação do wchar_t  do gcc, o tamanho é 32 bits, portanto o mesmo comporta caracteres que  consumam até 4bytes (como alguns caracteres Unicode).</p>
+
+<p>UTF-8 (8-bit Unicode Transformation Format) é uma das primeiras  codificações que implementam suporte a Unicode characters, ele foi  criado por Ken Thompson (o cara que criou a linguagem B e que ja recebeu  até premio turing junto com o Denis Ritchie) e Rob Pike (junto com Ken  Thompson criou o sistema operacional Plan 9) num restaurante de New  Jersey (pode acreditar!) em setembro de 1992. Os caras resolveram fazer  isso porque odiaram o suporte a caracteres 16bit do UTF original e do  ISO 10646. O formato foi feito para ser compatível com o padrão ASCII e  utiliza um numero variado de bytes para representar os caracteres  (caracteres ASCII usam 1 caracteres, e letras acentuadas geralmente  utilizam 2 caracteres).</p>
+
+<p>Nem todas as implementações do tipo wchar_t comportam todas as  possibilidades da codificação UTF-8, o wchar_t do compilador c++ da  microsoft é de 16bits e portanto não comporta os casos em que os  caracteres utf-8 são maiores que 16bits (É UMA CILADA BINO!). Mas aí  existem umas manhas pra resolver este problema.</p>
+
+<pre><code>&lt;/Teoria chata&gt;
+</code></pre>
+
+<p>A biblioteca iconv é uma biblioteca comum em sistemas UNIX, ela faz a  conversão entre diferentes codificações de caracteres inclusive de uma  codificação como o utf-8 para a codificação interna do wchar_t. Chega de  enrolação, la vai o codigo.</p>
+
+<p>(a linguagem é C++)</p>
+
+<div class="highlight"><pre><code class="cpp"><span class="c1">// lembre se desses headers:</span>
+<span class="cp">#include &lt;cwchar&gt;</span>
+<span class="cp">#include &lt;iconv.h&gt;</span>
+<span class="cp">#include &lt;langinfo.h&gt;</span>
+
+<span class="c1">// UTF-8 multibyte string para wide char string</span>
+<span class="kt">wchar_t</span> <span class="o">*</span> <span class="n">utf8mbstowcs</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">iconv_t</span> <span class="n">cd</span><span class="p">;</span>
+    <span class="n">size_t</span> <span class="n">inleft</span><span class="p">,</span> <span class="n">outleft</span><span class="p">;</span>
+    <span class="kt">wchar_t</span> <span class="o">*</span><span class="n">wbuf</span><span class="p">;</span>
+    <span class="n">wbuf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">wchar_t</span><span class="p">[</span><span class="n">strlen</span><span class="p">(</span><span class="n">str</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">wbuf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">str</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="n">cd</span> <span class="o">=</span> <span class="n">iconv_open</span><span class="p">(</span><span class="s">&quot;WCHAR_T&quot;</span><span class="p">,</span> <span class="s">&quot;UTF8&quot;</span><span class="p">);</span>
+    <span class="n">iconv</span><span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+    <span class="n">inleft</span>  <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">str</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">outleft</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">str</span><span class="p">)</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">wchar_t</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="kt">char</span> <span class="o">*</span><span class="n">in</span>  <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">str</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">out</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">wbuf</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">iconv</span><span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">in</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">inleft</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">outleft</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">wbuf</span><span class="p">;</span>
+        <span class="n">wbuf</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">iconv_close</span><span class="p">(</span><span class="n">cd</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">wbuf</span><span class="p">;</span>
+<span class="p">}</span>
+ 
+<span class="c1">// wide char string para UTF-8 multibyte string</span>
+<span class="kt">char</span> <span class="o">*</span><span class="n">wcstoutf8mbs</span> <span class="p">(</span><span class="k">const</span> <span class="kt">wchar_t</span> <span class="o">*</span><span class="n">wstr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">iconv_t</span> <span class="n">cd</span><span class="p">;</span>
+    <span class="n">size_t</span> <span class="n">inleft</span><span class="p">,</span> <span class="n">outleft</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="n">wcstombs</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">wstr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+    <span class="n">inleft</span>  <span class="o">=</span> <span class="n">wcstombs</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">wstr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">outleft</span> <span class="o">=</span> <span class="p">(</span><span class="n">inleft</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">wchar_t</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">inleft</span><span class="p">);</span>
+    
+    <span class="c1">// melhor converter, vai que algo errado acontece por conta</span>
+    <span class="c1">// de endianess</span>
+    <span class="n">wcstombs</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">wstr</span><span class="p">,</span> <span class="n">inleft</span><span class="p">);</span> 
+    <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">outleft</span><span class="p">];</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">outleft</span><span class="p">);</span>
+    
+    <span class="n">cd</span> <span class="o">=</span> <span class="n">iconv_open</span><span class="p">(</span><span class="s">&quot;UTF8&quot;</span><span class="p">,</span> <span class="n">nl_langinfo</span><span class="p">(</span><span class="n">CODESET</span><span class="p">));</span>
+    <span class="n">iconv</span><span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    
+    <span class="kt">char</span> <span class="o">*</span><span class="n">in</span>  <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">char</span> <span class="o">*&gt;</span><span class="p">((</span><span class="kt">wchar_t</span><span class="o">*</span><span class="p">)</span><span class="n">str</span><span class="p">);</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="n">buf</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">iconv</span><span class="p">(</span><span class="n">cd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">in</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">inleft</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">outleft</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">buf</span><span class="p">;</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">iconv_close</span><span class="p">(</span><span class="n">cd</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">buf</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+<p>Referências:</p>
+
+<ul>
+<li>http://www.cl.cam.ac.uk/~mgk25/ucs/utf-8-history.txt</li>
+<li>http://opengroup.org/onlinepubs/007908799/xsh/wchar.h.html</li>
+<li>http://icu-project.org/docs/papers/unicode_wchar_t.html</li>
+</ul>
+
+
+		<div align="right"><a href="#top">^ Topo</a></div>
+	</body>
+</html>
+
+
