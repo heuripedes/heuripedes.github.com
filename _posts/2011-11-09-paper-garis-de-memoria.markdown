@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Paper: Garis de memória
+title: "Paper: Garis de memória"
 ---
 
 Repostagem do paper que escrevi para a e-zine [Cogumelo Binário](http://cogumelobinario.hashit.org/). 
