@@ -3,10 +3,10 @@ html {
 }
 
 body {
-	font: 18px "Droid Serif", Inconsolata, serif;
-	margin: 20px 80px;
-	color: #4b4b4b;
-	background: #f0f0f0;
+	font: 18px "Liberation Serif", "Droid Serif", Inconsolata, serif;
+	/*margin: 20px 80px;*/
+	color: #3b3b3b;
+	background: #e0e0e0;
 	line-height: 140%;
 }
 
@@ -18,12 +18,26 @@ blockquote {
 	background: #d0d0d0;
 }
 
+a:link {
+	color: #2f76d7;
+}
+a:visited {
+	color: #6c6c6c;
+}
+
 .highlight {
 	margin: 0 -20px;
 	padding: 0 20px;
-	background; #eee;
-	border-top:    1px solid #ddd;
-	border-bottom: 1px solid #ddd;
+	background; #eeeeee;
+	border-top:    1px solid #dddddd;
+	border-bottom: 1px solid #dddddd;
 	font-size: 82%;
 	font-family: "Droid Sans Mono", monospace;
+}
+
+.page-contents {
+	background: #f2f2f2;
+	margin: 1em auto;
+	max-width: 210mm;
+	padding: 1em 2em;
 }
