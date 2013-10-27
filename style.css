@@ -14,6 +14,27 @@ p {
 	text-align: justify;
 }
 
+.page-contents {
+	background: #f2f2f2;
+	margin: 1em auto;
+	max-width: 210mm;
+	padding: 1em 2em;
+}
+
+code, .highlight, .page-contents > pre {
+	font-family: "Liberation Mono", "Droid Sans Serif", monospace;
+	font-size: 82%;
+}
+
+.highlight, .page-contents > pre {
+	margin: 0 -20px;
+	padding: 0 20px;
+	border-top:    1px solid #dddddd;
+	border-bottom: 1px solid #dddddd;
+	background; #eeeeee;
+}
+
+
 blockquote {
 	background: #d0d0d0;
 }
@@ -25,19 +46,4 @@ a:visited {
 	color: #6c6c6c;
 }
 
-.highlight {
-	margin: 0 -20px;
-	padding: 0 20px;
-	background; #eeeeee;
-	border-top:    1px solid #dddddd;
-	border-bottom: 1px solid #dddddd;
-	font-size: 82%;
-	font-family: "Droid Sans Mono", monospace;
-}
 
-.page-contents {
-	background: #f2f2f2;
-	margin: 1em auto;
-	max-width: 210mm;
-	padding: 1em 2em;
-}
