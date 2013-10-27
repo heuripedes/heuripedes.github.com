@@ -1,6 +1,7 @@
-
-NotSoSecure CTF Writeup
-=======================
+---
+layout: post
+title: NotSoSecure CTF 2013 Writeup
+---
 
 This is a writeup for the public CTF hosted by NoSoSecure for the celebration 
 of SQLi Labs's launch. It started 16:00 BST on Friday 25th October and ended 
