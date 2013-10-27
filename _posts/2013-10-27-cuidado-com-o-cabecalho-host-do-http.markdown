@@ -9,9 +9,9 @@ acessar. O cabeçalho serve para que o servidor web possa identificar qual
 recurso o usuário está requisitando quando o servidor atende múltiplos
 nomes de host (sites).
 
-Apesar de exigir a presença do cabeçalho, a RFC do protocolo, no item 5.2[1],
+Apesar de exigir a presença do cabeçalho, a RFC do protocolo, no [item 5.2][1],
 autoriza que o mesmo seja ignorado caso o cliente HTTP faça a requisição
-utilizando uma URI absoluta[2]. Abaixo você pode ver um exemplo de requisição
+utilizando uma [URI absoluta][2]. Abaixo você pode ver um exemplo de requisição
 com URI relativa e outro com URI absoluta, respectivamente:
 
 	GET /index.php HTTP/1.1
@@ -74,6 +74,6 @@ Se você utiliza PHP e/ou Apache, você pode ler mais sobre a solução e sobre 
 problema [neste resposta do StackOverflow](http://stackoverflow.com/a/2297421).
 
 
-[1]:http://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5.2
-[2]:http://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5.1.2
+[1]: http://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5.2 "RFC 2616 - 5.2 - The Resource Identified by a Request"
+[2]: http://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html#sec5.1.2 "RFC 2616 - 5.1.2 - Request-URI"
 
