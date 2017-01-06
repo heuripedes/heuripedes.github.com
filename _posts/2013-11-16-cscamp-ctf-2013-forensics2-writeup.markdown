@@ -1,6 +1,7 @@
 ---
 layout: post
 title: CSCamp CTF 2013 Forensics2 Writeup
+lang: en
 ---
 
 >enygmata/fmul: Alright guys, first-off I want to say that this text does not

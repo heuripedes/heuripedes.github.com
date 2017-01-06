@@ -1,49 +1,95 @@
+/*
+ * background:  #f7f8f3
+ * foreground:  #373239
+ * link: #2b77b8  #1e527f (visited)
+ */
+
 html {
-	overflow-y: scroll
+	overflow-y: scroll;
+	font-family: Bookerly, "Liberation Serif", "Droid Serif", Inconsolata, serif;
+
+	/* normalize.css */
+	line-height: 1.15; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;
 }
 
 body {
-	font: 18px "Liberation Serif", "Droid Serif", Inconsolata, serif;
-	/*margin: 20px 80px;*/
-	color: #3b3b3b;
-	background: #e0e0e0;
-	line-height: 140%;
+	font-size: 18px;
+	color: #373239;
+	background: #777875;
 }
 
-p {
-	text-align: justify;
+header, section, article {
+	box-sizing: border-box;
+	padding: 1em;
+	max-width: 50em;
+	margin: 0 auto;
+
+	/* normalize.css  */
+	display: block;
+	background: #f7f8f3;
 }
 
-.page-contents {
-	background: #f2f2f2;
-	margin: 1em auto;
-	max-width: 210mm;
-	padding: 1em 2em;
+/* normalize.css: fixes some safari issues (KEEP BOTH) */
+b, strong { font-weight: inherit; }
+b, strong { font-weight: bolder; }
+img { border-style: none; }
+
+a {
+  background-color: transparent; /* 1 */
+  -webkit-text-decoration-skip: objects; /* 2 */
+  color: #2b77b8;
 }
 
-code, .highlight, .page-contents > pre {
-	font-family: "Liberation Mono", "Droid Sans Serif", monospace;
-	font-size: 82%;
-}
-
-.highlight, .page-contents > pre {
-	margin: 0 -20px;
-	padding: 0 20px;
-	border-top:    1px solid #dddddd;
-	border-bottom: 1px solid #dddddd;
-	background; #eeeeee;
-}
-
-
-blockquote {
-	background: #d0d0d0;
-}
-
-a:link {
-	color: #2f76d7;
-}
 a:visited {
-	color: #6c6c6c;
+	color: #1e527f;
 }
 
+a:active,
+a:hover {
+  outline-width: 0;
+}
 
+h1 {
+	/* normalize.css */
+	font-size: 2em;
+	margin: 0.67em 0;
+}
+
+code, pre, figure.highlight {
+	font-family: Inconsolata, "Liberation Mono", "Droid Sans Mono", monospace;
+	/* normalize.css */
+	font-size: 1em;
+}
+
+article {
+	border-top: 1px solid #373239;
+	border-bottom: 1px solid #373239;
+}
+
+article h1:first-child {
+	margin-top: 0;
+	padding-top: 1em;
+}
+
+article > p {
+	text-align: justify;
+	margin-left:  1em;
+	margin-right: 1em;
+}
+
+article > p.subh {
+	text-align: left;
+	margin: 2em 0;
+	margin-top: -1em;
+	font-size: 0.9em;
+}
+
+div.highlighter-rouge {
+	overflow-x: visible;
+}
+
+div.highlighter-rouge, figure.highlight {
+	background: #fefffa;
+	margin: 0 -1em;
+	padding: 0.1em 1em;
+}

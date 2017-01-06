@@ -1,23 +1,29 @@
 {% include header.html %}
-		<h1>{{ page.title }}</h1>
-		<span>{{ page.date | date_to_string }} - {{ site.author }}</span>
-		{{ content }}
-		<br />
-<div id="disqus_thread"></div>
-<script>
-var disqus_config = function () {
-    //this.page.url = "{{site.url}}{{page.url}}";
-    this.page.title = "{{page.title}}";
-    //this.page.identifier = PAGE_IDENTIFIER;
-};
+
+<article lang="{{page.lang}}">
+	<h1>{{ page.title }}</h1>
+	<p class="subh">{{ page.date | date_to_string }} - {{ site.author }}</p>
+	{{ content }}
+</article>
+
+<section>
+	<div id="disqus_thread"></div>
+	<script>
+		var disqus_config = function () {
+			//this.page.url = "{{site.url}}{{page.url}}";
+			this.page.title = "{{page.title}}";
+			//this.page.identifier = PAGE_IDENTIFIER;
+		};
 
 (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = '//heuripedes.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
+	var d = document, s = d.createElement('script');
+	s.src = '//heuripedes.disqus.com/embed.js';
+	s.setAttribute('data-timestamp', +new Date());
+	(d.head || d.body).appendChild(s);
 })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+</section>
 
 {% include footer.html %}

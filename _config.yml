@@ -1,6 +1,6 @@
 
-markdown: rdiscount
-pygments: true
+markdown: kramdown
+highlighter: rouge
 author: Higor Eurípedes
 title: heuripedes
 
