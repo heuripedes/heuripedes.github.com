@@ -6,7 +6,7 @@ lang: english
 
 >Transcription of an old pamphlet I found on the internet in the night of 24/11/2019
 
-= How To Increase Wages Without Raising Prices
+# How To Increase Wages Without Raising Prices
 
 **THE BIBLE SOLUTION TO THE LABOR-MANAGEMENT DISPUTE**  
 by ALEXANDER SCHIFFNER
