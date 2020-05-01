@@ -93,3 +93,13 @@ div.highlighter-rouge, figure.highlight {
 	margin: 0 -1em;
 	padding: 0.1em 1em;
 }
+
+
+.language-plaintext {
+    background: transparent !important;
+}
+
+.language-plaintext pre {
+	margin-left:  1em;
+	margin-right: 1em;
+}
