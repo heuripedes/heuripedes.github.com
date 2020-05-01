@@ -71,7 +71,7 @@ article h1:first-child {
 	padding-top: 1em;
 }
 
-article > p {
+article > p, .langauge-plaintext pre {
 	text-align: justify;
 	margin-left:  1em;
 	margin-right: 1em;
@@ -88,13 +88,14 @@ div.highlighter-rouge {
 	overflow-x: visible;
 }
 
-div.highlighter-rouge, figure.highlight {
+:not(.language-plaintext).highlighter-rouge, figure.highlight {
+    border: 1px solid #cfcfcf;
 	background: #fefffa;
 	margin: 0 -1em;
 	padding: 0.1em 1em;
 }
 
-
+/*
 .language-plaintext {
     background: transparent !important;
 }
@@ -103,3 +104,7 @@ div.highlighter-rouge, figure.highlight {
 	margin-left:  1em;
 	margin-right: 1em;
 }
+
+:not(.language-plaintext).highlighter-rouge
+
+*/
