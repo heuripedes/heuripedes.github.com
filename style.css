@@ -4,7 +4,7 @@
  * link: #2b77b8  #1e527f (visited)
  */
 
-html {
+ html {
 	overflow-y: scroll;
 	font-family: Bookerly, "Liberation Serif", "Droid Serif", Inconsolata, serif;
 
@@ -71,7 +71,7 @@ article h1:first-child {
 	padding-top: 1em;
 }
 
-article > p, .langauge-plaintext pre {
+article > p, .language-plaintext pre {
 	text-align: justify;
 	margin-left:  1em;
 	margin-right: 1em;
@@ -89,22 +89,8 @@ div.highlighter-rouge {
 }
 
 :not(.language-plaintext).highlighter-rouge, figure.highlight {
-    border: 1px solid #cfcfcf;
+  border: 1px solid #cfcfcf;
 	background: #fefffa;
 	margin: 0 -1em;
 	padding: 0.1em 1em;
 }
-
-/*
-.language-plaintext {
-    background: transparent !important;
-}
-
-.language-plaintext pre {
-	margin-left:  1em;
-	margin-right: 1em;
-}
-
-:not(.language-plaintext).highlighter-rouge
-
-*/
