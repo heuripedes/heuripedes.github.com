@@ -3,4 +3,27 @@ markdown: kramdown
 highlighter: rouge
 author: Higor Eurípedes
 title: heuripedes
+show_excerpts: true
+excerpt_length: 50
+google_analytics: 'G-59LHWPNBH5'
 
+
+theme: minima
+minima:
+  disqus:
+    shortname: heuripedes
+  social_links:
+    linkedin: higor-eurípedes-araújo-21a22112
+    github: heuripedes
+texture:
+  title: Higor Eurípedes
+  tagline: Software paramedic and IT stagehand
+  style: blue
+  disqus_shortname: heuripedes
+  analytics_id: "G-8BNMB7JFH4"
+  showNav: true
+
+paginate: 5
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
