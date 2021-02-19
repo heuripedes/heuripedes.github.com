@@ -3,7 +3,7 @@ layout: page
 title: Meu setup
 ---
 
-> Esta página foi atualizada em 2021-02-08
+> Esta página foi atualizada em 2021-02-18 e contem links afiliados
 
 Na tabela abaixo você pode conferir a configuração atual da minha estação de trabalho. Eu tenho Windows 10 Pro e Ubuntu 20.04 em dualboot e uso o PC tanto para trabalhar como para me divertir.
 
@@ -39,3 +39,4 @@ Itens que acho interessantes:
 | <a href="https://amzn.to/3aDPDw0">Apoio de Pulso Redragon P023 para Teclado<a> | Esse apoio é do tamanho exato do teclado Kumara acima. |
 | <a href="https://amzn.to/3tOnJ9E">Mousepad Gamer Redragon Aquarius Speed Macio</a> | Quem não quer um mousepadzão? |
 | <a href="https://www.leroymerlin.com.br/mesa-para-computador-gamer-dupla-regulagem-de-altura-tampos-120x45-e-120x35cm-preto_1567187069?region=outros">Mesa Para Computador Gamer Dupla Regulagem De Altura Tampos 120x45 E 120x35cm - Preto</a>| |
+| <a href="https://amzn.to/3puajfn">Case para Hd transparente Usb 3.0 Ecase-300<a> | Sempre bom ter uma |
