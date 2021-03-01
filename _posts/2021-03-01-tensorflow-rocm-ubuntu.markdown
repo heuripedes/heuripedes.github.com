@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "Setting up tensorflow-rocm on Ubuntu 20.04"
+title: "Setting up ROCm 4.0 and tensorflow-rocm on Ubuntu 20.04"
 lang: english
 ---
 
+ROCm 4.0 and Ubuntu Desktop 20.04 don't play well together out of the box so [while ROCm 4.1 isn't available](https://github.com/RadeonOpenCompute/ROCm/issues/1307#issuecomment-787671933), we'll have to make do with what we have. I hope you enjoy this guide.
 
 ## 1. The right kernel
 The first step in the process is to check your kernel version as ROCm doesn't yet support kernels newer than 5.4. Ubuntu Server installs are usually fine in this department as they ship with the GA (General Availability) stack, but Ubuntu Desktop from 20.04 onwards will ship with the [Hardware Enablement Stack](https://wiki.ubuntu.com/Kernel/LTSEnablementStack#Ubuntu_20.04_LTS_-_Focal_Fossa) unless you're using one of those HP/Dell/etc prebuilts, in which case Ubuntu will try to use the OEM flavour.
@@ -59,4 +60,3 @@ Tensorflow is available under two packages, `tensorflow-rocm` and `tensorflow-ro
 The following command will show the devices recognized by tensorflow:
 
     python -c 'from tensorflow.python.client import device_lib; print(device_lib.list_local_devices())'
-
