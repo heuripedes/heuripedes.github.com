@@ -1,2 +1,6 @@
 _site
 *.swp
+vendor/
+.bundle/
+.jekyll-cache/
+.sass-cache/

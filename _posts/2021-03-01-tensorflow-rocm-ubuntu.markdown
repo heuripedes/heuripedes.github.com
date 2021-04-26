@@ -36,6 +36,7 @@ First download and verify the key:
 
 If the check failed, please consult the [official installation guide](https://rocmdocs.amd.com/en/latest/Installation_Guide/Installation-Guide.html) or comment on the post (no promises). If everything went right, proceed with these commands to configure `apt` and install the ROCm driver and libraries:
 
+    sudo apt-key add /tmp/rocm.gpg.key
     echo 'deb [arch=amd64] https://repo.radeon.com/rocm/apt/debian/ xenial main' | sudo tee /etc/apt/sources.list.d/rocm.list
     sudo apt update
     sudo apt install rocm-dkms rocm-libs
