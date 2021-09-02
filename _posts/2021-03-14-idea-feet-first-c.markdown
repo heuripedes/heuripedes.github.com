@@ -4,7 +4,9 @@ title: "Project idea: 'Feet First C: The worse guide ever'"
 lang: english
 ---
 
-Lately I've been thinking about writing a C guide of sorts. Perhaps the worse C guide ever, because I'd like to start from a really crude and unconventional point: barely compilable C code with plenty of `goto`s.
+Lately I've been thinking about writing a C guide of sorts. Perhaps the worse C
+guide ever, because I'd like to start from a really crude and unconventional
+point: barely compilable C code with plenty of `goto`s.
 
 I can already imagine the reaction of some people when they see something like:
 
@@ -34,7 +36,8 @@ end:
 }
 ```
 
-From that the reader would be guided into higher and higher level constructs like if/else blocks, loops and all:
+From that the reader would be guided into higher and higher level constructs
+like if/else blocks, loops and all:
 
 ```c
 /* this: */
@@ -53,4 +56,8 @@ for (int i = 0; i < 10; i = i + 1) {
 }
 ```
 
-The idea is to not only teach C but also teach a general idea of how the computer runs our code. My hope is that this somehow smoothens the learning curve as the reader will be presented with very few language constructs (variables, goto, if, functions). And yes, I intend to present functions before `while`, `for` etc...
+The idea is to not only teach C but also teach a general idea of how the
+computer runs our code. My hope is that this somehow smoothens the learning
+curve as the reader will be presented with very few language constructs
+(variables, goto, if, functions). And yes, I intend to present functions before
+`while`, `for` etc...
