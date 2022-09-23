@@ -27,8 +27,8 @@ From thread (C++)....: tls.value = hello world
 
 ## Commands to reproduce
 
-For pybind 2.2.4: ` pip install cppimport "pybind11==2.2.4" &>/dev/null && rm cpp_module*cpython*so && python tlstest.py 2>/dev/null`
-For pybind 2.3.0: `pip install cppimport "pybind11==2.3.0" &>/dev/null && rm cpp_module*cpython*so && python tlstest.py 2>/dev/null `
+* For pybind 2.2.4: ` pip install cppimport "pybind11==2.2.4" &>/dev/null && rm cpp_module*cpython*so && python tlstest.py 2>/dev/null`
+* For pybind 2.3.0: `pip install cppimport "pybind11==2.3.0" &>/dev/null && rm cpp_module*cpython*so && python tlstest.py 2>/dev/null `
 
 
 ## Code to reproduce:
